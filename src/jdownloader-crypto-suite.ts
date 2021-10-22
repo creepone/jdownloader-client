@@ -149,7 +149,7 @@ export class JDownloaderCryptoSuite {
   protected async callDevice(
     query: string,
     deviceId: string,
-    params?: object
+    params: object[] = []
   ): Promise<any> {
     this.checkIfConnected()
 
@@ -180,13 +180,13 @@ export class JDownloaderCryptoSuite {
       })
   }
 
-  private createBody(rid: number, query: string, params?: object) {
+  private createBody(rid: number, query: string, params: object[]) {
     const baseBody = {
       apiVer: this.apiVer,
       rid,
       url: query
     }
-    return params ? { ...baseBody, params: [JSON.stringify(params)] } : baseBody
+    return params.length > 0 ? { ...baseBody, params: params.map(p => JSON.stringify(p)) } : baseBody
   }
 
   /**

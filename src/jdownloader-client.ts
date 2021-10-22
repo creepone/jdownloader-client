@@ -30,7 +30,7 @@ export class JDownloaderClient extends JDownloaderCryptoSuite {
     deviceId: string,
     options: ILinkQuery = {}
   ): Promise<IDownloadLink[]> {
-    return this.callDevice('/downloadsV2/queryLinks', deviceId, options).then(
+    return this.callDevice('/downloadsV2/queryLinks', deviceId, [options]).then(
       response => response.data
     )
   }
@@ -45,7 +45,7 @@ export class JDownloaderClient extends JDownloaderCryptoSuite {
     deviceId: string,
     options: ICrawledLinkQuery = {}
   ): Promise<ICrawledLink[]> {
-    return this.callDevice('/linkgrabberv2/queryLinks', deviceId, options).then(
+    return this.callDevice('/linkgrabberv2/queryLinks', deviceId, [options]).then(
       response => response.data
     )
   }
@@ -74,7 +74,7 @@ export class JDownloaderClient extends JDownloaderCryptoSuite {
     deviceId: string,
     options: IAddLinksQuery
   ): Promise<ILinkCollectingJob> {
-    return this.callDevice('/linkgrabberv2/addLinks', deviceId, {...options, links: options.links.join(' ')}).then(
+    return this.callDevice('/linkgrabberv2/addLinks', deviceId, [{...options, links: options.links.join(' ')}]).then(
       response => response.data
     )
   }
@@ -88,7 +88,7 @@ export class JDownloaderClient extends JDownloaderCryptoSuite {
     deviceId: string,
     options: IPackageQuery = {}
   ): Promise<IFilePackage[]> {
-    return this.callDevice('/downloadsV2/queryPackages', deviceId, options).then(
+    return this.callDevice('/downloadsV2/queryPackages', deviceId, [options]).then(
       response => response.data
     )
   }
@@ -96,8 +96,17 @@ export class JDownloaderClient extends JDownloaderCryptoSuite {
   public moveToDownloadlist(
     deviceId: string,
     linkIds: number[] = [],
-    packageIds: number[] = []): Promise {
-    return this.callDevice('/linkgrabberv2/moveToDownloadlist', deviceId, {linkIds, packageIds}).then(
+    packageIds: number[] = []): Promise<unknown> {
+    return this.callDevice('/linkgrabberv2/moveToDownloadlist', deviceId, [linkIds, packageIds]).then(
+      response => response.data
+    )
+  }
+
+  public removeLinks(
+    deviceId: string,
+    linkIds: number[] = [],
+    packageIds: number[] = []): Promise<unknown> {
+    return this.callDevice('/linkgrabberv2/removeLinks', deviceId, [linkIds, packageIds]).then(
       response => response.data
     )
   }
