@@ -92,4 +92,13 @@ export class JDownloaderClient extends JDownloaderCryptoSuite {
       response => response.data
     )
   }
+
+  public moveToDownloadlist(
+    deviceId: string,
+    linkIds: number[] = [],
+    packageIds: number[] = []): Promise {
+    return this.callDevice('/linkgrabberv2/moveToDownloadlist', deviceId, {linkIds, packageIds}).then(
+      response => response.data
+    )
+  }
 }
