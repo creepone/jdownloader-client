@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.errorParser = exports.validateRid = exports.uniqueRid = exports.parse = void 0;
 function parse(JSONstr) {
     return JSON.parse(JSONstr);
 }

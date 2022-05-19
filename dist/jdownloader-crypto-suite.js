@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.JDownloaderCryptoSuite = exports.DeviceStatus = void 0;
 const axios_1 = require("axios");
 const crypto = require("crypto");
 const querystring = require("querystring");
@@ -20,8 +21,8 @@ var DeviceStatus;
 })(DeviceStatus = exports.DeviceStatus || (exports.DeviceStatus = {}));
 class JDownloaderCryptoSuite {
     constructor({ email, password, appKey = 'jdownloader-api-indev', apiVer = 1 }) {
-        this.loginSecret = crypto_1.sha256(email + password + 'server');
-        this.deviceSecret = crypto_1.sha256(email + password + 'device');
+        this.loginSecret = (0, crypto_1.sha256)(email + password + 'server');
+        this.deviceSecret = (0, crypto_1.sha256)(email + password + 'device');
         this.sessionToken = null;
         this.regainToken = null;
         this.serverEncryptionToken = null;
@@ -40,8 +41,8 @@ class JDownloaderCryptoSuite {
         }).then((data) => {
             this.sessionToken = data.sessiontoken;
             this.regainToken = data.regaintoken;
-            this.serverEncryptionToken = crypto_1.createEncryptionToken(this.loginSecret, this.sessionToken);
-            this.deviceEncryptionToken = crypto_1.createEncryptionToken(this.deviceSecret, this.sessionToken);
+            this.serverEncryptionToken = (0, crypto_1.createEncryptionToken)(this.loginSecret, this.sessionToken);
+            this.deviceEncryptionToken = (0, crypto_1.createEncryptionToken)(this.deviceSecret, this.sessionToken);
         });
     }
     /**
@@ -55,8 +56,8 @@ class JDownloaderCryptoSuite {
         }).then((data) => {
             this.sessionToken = data.sessiontoken;
             this.regainToken = data.regaintoken;
-            this.serverEncryptionToken = crypto_1.createEncryptionToken(this.serverEncryptionToken, this.sessionToken);
-            this.deviceEncryptionToken = crypto_1.createEncryptionToken(this.deviceSecret, this.sessionToken);
+            this.serverEncryptionToken = (0, crypto_1.createEncryptionToken)(this.serverEncryptionToken, this.sessionToken);
+            this.deviceEncryptionToken = (0, crypto_1.createEncryptionToken)(this.deviceSecret, this.sessionToken);
         });
     }
     /**
@@ -103,20 +104,20 @@ class JDownloaderCryptoSuite {
     callDevice(query, deviceId, params = []) {
         return __awaiter(this, void 0, void 0, function* () {
             this.checkIfConnected();
-            const rid = utils_1.uniqueRid();
-            const body = crypto_1.encrypt(JSON.stringify(this.createBody(rid, query, params)), this.deviceEncryptionToken);
+            const rid = (0, utils_1.uniqueRid)();
+            const body = (0, crypto_1.encrypt)(JSON.stringify(this.createBody(rid, query, params)), this.deviceEncryptionToken);
             return axios_1.default
                 .post('https://api.jdownloader.org/t_' +
                 encodeURI(this.sessionToken) +
                 '_' +
                 encodeURI(deviceId) +
                 query, body)
-                .then(response => crypto_1.decrypt(response.data, this.deviceEncryptionToken))
+                .then(response => (0, crypto_1.decrypt)(response.data, this.deviceEncryptionToken))
                 .then(utils_1.parse)
-                .then(utils_1.validateRid(rid))
+                .then((0, utils_1.validateRid)(rid))
                 .catch(utils_1.errorParser)
                 .catch(err => {
-                return Promise.reject(new Error(crypto_1.decrypt(err.message, this.deviceEncryptionToken)));
+                return Promise.reject(new Error((0, crypto_1.decrypt)(err.message, this.deviceEncryptionToken)));
             });
         });
     }
@@ -135,7 +136,7 @@ class JDownloaderCryptoSuite {
      * @param {Object} params The parameters to the query
      */
     callServer(query, key, params) {
-        const rid = utils_1.uniqueRid();
+        const rid = (0, utils_1.uniqueRid)();
         const path = query +
             '?' +
             querystring.stringify(Object.assign(Object.assign({}, params), { rid }));
@@ -145,9 +146,9 @@ class JDownloaderCryptoSuite {
             .digest('hex');
         return axios_1.default
             .post(`https://api.jdownloader.org${path}&signature=${signature}`)
-            .then(response => crypto_1.decrypt(response.data, key))
+            .then(response => (0, crypto_1.decrypt)(response.data, key))
             .then(utils_1.parse)
-            .then(utils_1.validateRid(rid))
+            .then((0, utils_1.validateRid)(rid))
             .catch(utils_1.errorParser);
     }
 }

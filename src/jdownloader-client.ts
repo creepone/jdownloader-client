@@ -102,11 +102,20 @@ export class JDownloaderClient extends JDownloaderCryptoSuite {
     )
   }
 
-  public removeLinks(
+  public linkGrabberRemoveLinks(
     deviceId: string,
     linkIds: number[] = [],
     packageIds: number[] = []): Promise<unknown> {
     return this.callDevice('/linkgrabberv2/removeLinks', deviceId, [linkIds, packageIds]).then(
+      response => response.data
+    )
+  }
+
+  public downloadsRemoveLinks(
+    deviceId: string,
+    linkIds: number[] = [],
+    packageIds: number[] = []): Promise<unknown> {
+    return this.callDevice('/downloadsV2/removeLinks', deviceId, [linkIds, packageIds]).then(
       response => response.data
     )
   }

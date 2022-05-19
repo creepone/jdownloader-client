@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.JDownloaderClient = void 0;
 const jdownloader_crypto_suite_1 = require("./jdownloader-crypto-suite");
 class JDownloaderClient extends jdownloader_crypto_suite_1.JDownloaderCryptoSuite {
     constructor(email, password, appKey = 'jdownloader-api-indev', apiVer = 1) {
@@ -52,8 +53,11 @@ class JDownloaderClient extends jdownloader_crypto_suite_1.JDownloaderCryptoSuit
     moveToDownloadlist(deviceId, linkIds = [], packageIds = []) {
         return this.callDevice('/linkgrabberv2/moveToDownloadlist', deviceId, [linkIds, packageIds]).then(response => response.data);
     }
-    removeLinks(deviceId, linkIds = [], packageIds = []) {
+    linkGrabberRemoveLinks(deviceId, linkIds = [], packageIds = []) {
         return this.callDevice('/linkgrabberv2/removeLinks', deviceId, [linkIds, packageIds]).then(response => response.data);
+    }
+    downloadsRemoveLinks(deviceId, linkIds = [], packageIds = []) {
+        return this.callDevice('/downloadsV2/removeLinks', deviceId, [linkIds, packageIds]).then(response => response.data);
     }
 }
 exports.JDownloaderClient = JDownloaderClient;

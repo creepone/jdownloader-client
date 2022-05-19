@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Priority = void 0;
 /**
  * [Official docs](https://my.jdownloader.org/developers/#tag_136)
  */

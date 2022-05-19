@@ -45,5 +45,6 @@ export declare class JDownloaderClient extends JDownloaderCryptoSuite {
      */
     downloadsQueryPackages(deviceId: string, options?: IPackageQuery): Promise<IFilePackage[]>;
     moveToDownloadlist(deviceId: string, linkIds?: number[], packageIds?: number[]): Promise<unknown>;
-    removeLinks(deviceId: string, linkIds?: number[], packageIds?: number[]): Promise<unknown>;
+    linkGrabberRemoveLinks(deviceId: string, linkIds?: number[], packageIds?: number[]): Promise<unknown>;
+    downloadsRemoveLinks(deviceId: string, linkIds?: number[], packageIds?: number[]): Promise<unknown>;
 }
